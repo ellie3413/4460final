@@ -12,8 +12,8 @@ function dataPreprocessor(row) {
     return {
         country: row.Country,
         continent: row.Continent,
-        house2022: +row['house2022'],
-        house2010: +row['house2010']
+        house2015: +row['2015'],
+        house2022: +row['2022']
     };
 }
 
