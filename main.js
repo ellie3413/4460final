@@ -28,7 +28,7 @@ var svg = d3.select('svg');
 var svgWidth = +svg.attr('width');
 var svgHeight = +svg.attr('height');
 
-var padding = {t: 60, r: 40, b: 60, l: 120};
+var padding = {t: 60, r: 40, b: 80, l: 80};
 
 // Compute chart dimensions
 var chartWidth = svgWidth - padding.l - padding.r;
@@ -43,19 +43,23 @@ var countries;
 var widthScale = d3.scaleLinear()
     .range([0,chartWidth])
 
+var HeightScale = d3.scaleLinear()
+    .range([chartHeight, 0])
+
 d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     // Create global variables here and initialize the chart
 
     countries = dataset
-    // widthScale.domain([0, d3.max(countries, function(d) {
-    //     return Math.max(d.house2015, d.house2022);
-    // })]);
-    const yMax = d3.max(countries, function(d) {
+    HeightScale.domain([0, d3.max(countries, function(d) {
         return Math.max(d.house2015, d.house2022);
-    });
+    })]);
+    // const yMax = d3.max(countries, function(d) {
+    //     return Math.max(d.house2015, d.house2022);
+    // });
 
-    widthScale.domain([0, yMax])
-        .range([chartHeight, 0]); 
+    // HeightScale.domain([0, yMax])
+    //     .range([chartHeight, 0]); 
+
 
     // **** Your JavaScript code goes here ****
     svg.append('text')
@@ -75,7 +79,7 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
         .call(xAxisBottom);
 
     // Create a left vertical axis using widthScale
-    var yAxisLeft = d3.axisLeft(widthScale)
+    var yAxisLeft = d3.axisLeft(HeightScale)
     .ticks(9) // 원하는 만큼의 틱 개수 설정
     .tickFormat(d => d + '%'); // 값에 포맷 추가 (예: % 기호)
 
@@ -106,7 +110,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
     });
 
     // Compute the spacing for bar bands based on the number of countries (20 in this case)
-    var barBand = chartHeight / filteredCountries.length;
+    var barBand = chartWidth / filteredCountries.length;
     var barHeight = barBand * 0.6;
 
     // Bar width adjustment for two bars per country
@@ -120,7 +124,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
     var bars2015Enter = bars2015.enter()
         .append('rect')
         .attr('class', 'bar2015')
-        .attr('x', (d, i) => i * barBand + individualBarWidth + barSpacing) // 두 번째 바의 위치
+        .attr('x', (d, i) => i * barBand + barSpacing) // bar2015 x position
         .attr('y', chartHeight) // 초기 위치
         .attr('width', individualBarWidth) // 두께 조정
         .attr('height', 0) // 초기 높이
@@ -129,9 +133,9 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
     bars2015Enter.merge(bars2015)
         .transition()
         .duration(500)
-        .attr('x', (d, i) => i * barBand + individualBarWidth + barSpacing) // 바 위치
-        .attr('y', d => chartHeight - widthScale(d.house2015)) // 높이에 따라 위치 변경
-        .attr('height', d => widthScale(d.house2015)) // 값에 따라 바의 길이 설정
+        .attr('x', (d, i) => i * barBand + barSpacing) // 바 위치
+        .attr('y', d => HeightScale(d.house2015)) // 높이에 따라 위치 변경
+        .attr('height', d => chartHeight - HeightScale(d.house2015)) // 값에 따라 바의 길이 설정
         .attr('width', individualBarWidth) // 바 두께 유지
         .style('display', yearFilter === '2015' || yearFilter === 'both' ? 'block' : 'none'); 
 
@@ -144,7 +148,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
     var bars2022Enter = bars2022.enter()
         .append('rect')
         .attr('class', 'bar2022')
-        .attr('x', (d, i) => i * barBand) // 가로 방향으로 나열
+        .attr('x', (d, i) => i * barBand+ + barSpacing+individualBarWidth) // 가로 방향으로 나열
         .attr('y', chartHeight) // 초기 위치
         .attr('width', individualBarWidth) // 두께 조정
         .attr('height', 0) // 초기 높이
@@ -153,13 +157,13 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
     bars2022Enter.merge(bars2022)
         .transition()
         .duration(500)
-        .attr('x', (d, i) => i * barBand) // 바 위치
-        .attr('y', d => chartHeight- widthScale(d.house2022)) // 높이에 따라 위치 변경
-        .attr('height', d => widthScale(d.house2022)) // 값에 따라 바의 길이 설정
+        .attr('x', (d, i) => i * barBand+ + barSpacing+individualBarWidth) // 바 위치
+        .attr('y', d => HeightScale(d.house2022)) // 높이에 따라 위치 변경
+        .attr('height', d => chartHeight - HeightScale(d.house2022)) // 값에 따라 바의 길이 설정
         .attr('width', individualBarWidth) // 바 두께 유지
         .style('display', yearFilter === '2022' || yearFilter === 'both' ? 'block' : 'none'); // 2022 표시 조건
 
-     bars2022.exit().remove();
+    bars2022.exit().remove();
     
 
 
@@ -172,8 +176,8 @@ var labelsEnter = labels.enter()
 .attr('class', 'label')
 .attr('text-anchor', 'front') // 끝을 기준으로 회전
 .attr('transform', (d, i) => {
-    const x = i * barBand + barBand / 2; // X 위치
-    const y = chartHeight + 15; // Y 위치
+    const x = i*barBand+barSpacing; // X 위치
+    const y = chartHeight + 10; // Y 위치
     return `translate(${x}, ${y}) rotate(-45)`; // 텍스트 회전
 })
 .text(d => d.country);
@@ -182,8 +186,8 @@ labelsEnter.merge(labels)
 .transition()
 .duration(500)
 .attr('transform', (d, i) => {
-    const x = i * barBand + barBand / 2; // X 위치
-    const y = chartHeight + 15; // Y 위치
+    const x = i*barBand+barSpacing; // X 위치
+    const y = chartHeight + 10; // Y 위치
     return `translate(${x}, ${y}) rotate(45)`; // 텍스트 회전
 });
 
