@@ -40,14 +40,39 @@ h1 {
 
 /* 마우스를 올렸을 때 효과 */
 #filter-button:hover {
-    background-color: #96e49a; /* 조금 더 어두운 초록색 */
+    background-color: #96e49a; 
     color: rgb(0, 0, 0);
 }
 
 /* 버튼 클릭 시 효과 */
 #filter-button:active {
-    background-color: #3e8e41; /* 더 어두운 초록색 */
-    box-shadow: 0 2px #666; /* 그림자 줄임 */
-    transform: translateY(2px); /* 버튼이 눌리는 효과 */
+    background-color: #3e8e41; 
+    transform: translateY(2px); 
 }
+
+/* 드롭다운 스타일 */
+.custom-select {
+    background-color: #4CAF50; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 3px 20px; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+    text-align: left; 
+}
+
+/* 드롭다운에 마우스를 올렸을 때 */
+.custom-select:hover {
+    background-color: #96e49a; 
+    color: rgb(0, 0, 0);
+}
+
+/* 드롭다운 선택 중 */
+.custom-select:focus {
+    outline: none; 
+    background-color: #3e8e41;
+}
+
 
