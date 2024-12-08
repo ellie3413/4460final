@@ -12,3 +12,12 @@ body {
 #main {
     margin: 20px;
 }
+
+h1 {
+    background-color: rgb(206, 239, 139);
+    padding: 10px; 
+    border-radius: 5px; 
+    width: 400px;
+    height: 70px;
+    text-align: center; 
+}
