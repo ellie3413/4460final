@@ -28,7 +28,7 @@ var svg = d3.select('svg');
 var svgWidth = +svg.attr('width');
 var svgHeight = +svg.attr('height');
 
-var padding = {t: 60, r: 40, b: 30, l: 120};
+var padding = {t: 60, r: 40, b: 60, l: 120};
 
 // Compute chart dimensions
 var chartWidth = svgWidth - padding.l - padding.r;
@@ -47,9 +47,15 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     // Create global variables here and initialize the chart
 
     countries = dataset
-    widthScale.domain([0, d3.max(countries, function(d) {
+    // widthScale.domain([0, d3.max(countries, function(d) {
+    //     return Math.max(d.house2015, d.house2022);
+    // })]);
+    const yMax = d3.max(countries, function(d) {
         return Math.max(d.house2015, d.house2022);
-    })]);
+    });
+
+    widthScale.domain([0, yMax])
+        .range([chartHeight, 0]); 
 
     // **** Your JavaScript code goes here ****
     svg.append('text')
@@ -61,16 +67,16 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
 
     var xAxisBottom = d3.axisBottom(widthScale)
     .ticks(0);
-     
+
 
     chartG.append('g')
         .attr('class', 'x-axis-bottom')
         .attr('transform', `translate(0, ${chartHeight})`) 
         .call(xAxisBottom);
 
-        // Create a left vertical axis using widthScale
+    // Create a left vertical axis using widthScale
     var yAxisLeft = d3.axisLeft(widthScale)
-    .ticks(10) // 원하는 만큼의 틱 개수 설정
+    .ticks(9) // 원하는 만큼의 틱 개수 설정
     .tickFormat(d => d + '%'); // 값에 포맷 추가 (예: % 기호)
 
     // Append the left vertical axis to the chart
