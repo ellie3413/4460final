@@ -53,12 +53,6 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     HeightScale.domain([0, d3.max(countries, function(d) {
         return Math.max(d.house2015, d.house2022);
     })]);
-    // const yMax = d3.max(countries, function(d) {
-    //     return Math.max(d.house2015, d.house2022);
-    // });
-
-    // HeightScale.domain([0, yMax])
-    //     .range([chartHeight, 0]); 
 
 
     // **** Your JavaScript code goes here ****
@@ -139,6 +133,36 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
         .attr('width', individualBarWidth) // 바 두께 유지
         .style('display', yearFilter === '2015' || yearFilter === 'both' ? 'block' : 'none'); 
 
+    //add hover 
+    var tooltip = d3.select('body')
+    .append('div') 
+    .attr('id', 'tooltip') 
+    .style('position', 'absolute') 
+    .style('visibility', 'hidden') 
+    .style('background-color', 'lightyellow') 
+    .style('border', '1px solid gray')
+    .style('border-radius', '4px')
+    .style('padding', '5px')
+    .style('font-size', '12px')
+    .style('pointer-events', 'none');
+    //add hover
+    bars2015Enter
+        .on('mouseover', function(event, d) {
+            tooltip
+                .style('visibility', 'visible')
+                .html(`Country: ${d.country}<br>Housing Burden 2015: ${d.house2015.toFixed(2)}%`)
+                .style('left', `${event.pageX + 10}px`) 
+                .style('top', `${event.pageY - 20}px`);
+        })
+        .on('mousemove', function(event) {
+            tooltip
+                .style('left', `${event.pageX + 10}px`)
+                .style('top', `${event.pageY - 20}px`);
+        })
+        .on('mouseout', function() {
+            tooltip.style('visibility', 'hidden');
+        });
+
     bars2015.exit().remove();
 
     // Bars for house2022
@@ -163,6 +187,22 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
         .attr('width', individualBarWidth) // 바 두께 유지
         .style('display', yearFilter === '2022' || yearFilter === 'both' ? 'block' : 'none'); // 2022 표시 조건
 
+    bars2022Enter
+        .on('mouseover', function(event, d) {
+            tooltip
+                .style('visibility', 'visible')
+                .html(`Country: ${d.country}<br>Housing Burden 2022: ${d.house2022.toFixed(2)}%`)
+                .style('left', `${event.pageX + 10}px`) 
+                .style('top', `${event.pageY - 20}px`);
+        })
+        .on('mousemove', function(event) {
+            tooltip
+                .style('left', `${event.pageX + 10}px`)
+                .style('top', `${event.pageY - 20}px`);
+        })
+        .on('mouseout', function() {
+            tooltip.style('visibility', 'hidden');
+        });
     bars2022.exit().remove();
     
 
