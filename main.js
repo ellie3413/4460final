@@ -64,10 +64,10 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     // **** Your JavaScript code goes here ****
     svg.append('text')
         .attr('class', 'title')  
-        .attr('x', 100) 
+        .attr('x', 500) 
         .attr('y', 30)           
         .attr('text-anchor', 'middle')  
-        .text('Housing Burden (%)');
+        .text('Global Housing Burden: A Comparison of 2015 vs. 2022');
 
     var xAxisBottom = d3.axisBottom(widthScale)
     .ticks(0);
