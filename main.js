@@ -33,10 +33,6 @@ var chartHeight = svgHeight - padding.t - padding.b;
 var chartG = svg.append('g')
     .attr('transform', 'translate('+[padding.l, padding.t]+')');
 
-// Compute the spacing for bar bands based on the number of countries (20 in this case)
-var barBand = chartHeight / 20;
-var barHeight = barBand * 0.7;
-
 var countries;
 
 var widthScale = d3.scaleLinear()
@@ -94,32 +90,13 @@ function updateChart(filterKey, cutoff = 0) {
         filteredCountries = countries.filter(d => d.continent === filterKey && d.house2022 >= cutoff && d.house2015 >= cutoff);
     }
 
+    // Compute the spacing for bar bands based on the number of countries (20 in this case)
+    var barBand = chartHeight / filteredCountries.length;
+    var barHeight = barBand * 0.6;
+
     // Bar width adjustment for two bars per country
     var barSpacing = barBand * 0.2; // Spacing between bars
     var individualBarWidth = (barBand - barSpacing) / 2;
-
-    // Bars for house2022
-    var bars2022 = chartG.selectAll('.bar2022')
-        .data(filteredCountries, d => d.country);
-
-    var bars2022Enter = bars2022.enter()
-        .append('rect')
-        .attr('class', 'bar2022')
-        .attr('x', (d, i) => i * barBand) // 가로 방향으로 나열
-        .attr('y', chartHeight) // 초기 위치
-        .attr('width', individualBarWidth) // 두께 조정
-        .attr('height', 0) // 초기 높이
-        .attr('fill', 'darkblue');
-
-    bars2022Enter.merge(bars2022)
-        .transition()
-        .duration(500)
-        .attr('x', (d, i) => i * barBand) // 바 위치
-        .attr('y', d => chartHeight - widthScale(d.house2022)) // 높이에 따라 위치 변경
-        .attr('height', d => widthScale(d.house2022)) // 값에 따라 바의 길이 설정
-        .attr('width', individualBarWidth); // 바 두께 유지
-
-    bars2022.exit().remove();
 
     // Bars for house2015
     var bars2015 = chartG.selectAll('.bar2015')
@@ -132,7 +109,7 @@ function updateChart(filterKey, cutoff = 0) {
         .attr('y', chartHeight) // 초기 위치
         .attr('width', individualBarWidth) // 두께 조정
         .attr('height', 0) // 초기 높이
-        .attr('fill', 'purple');
+        .attr('fill', 'green');
 
     bars2015Enter.merge(bars2015)
         .transition()
@@ -144,25 +121,56 @@ function updateChart(filterKey, cutoff = 0) {
 
     bars2015.exit().remove();
 
-    // Handle the text labels for each country
-    var labels = chartG.selectAll('.label')
+    // Bars for house2022
+    var bars2022 = chartG.selectAll('.bar2022')
         .data(filteredCountries, d => d.country);
 
-    var labelsEnter = labels.enter()
-        .append('text')
-        .attr('class', 'label')
-        .attr('text-anchor', 'middle')
-        .attr('x', (d, i) => i * barBand + barBand / 2) // 두 바의 가운데 위치
-        .attr('y', chartHeight + 15) // 바 아래에 레이블 표시
-        .text(d => d.country);
+    var bars2022Enter = bars2022.enter()
+        .append('rect')
+        .attr('class', 'bar2022')
+        .attr('x', (d, i) => i * barBand) // 가로 방향으로 나열
+        .attr('y', chartHeight) // 초기 위치
+        .attr('width', individualBarWidth) // 두께 조정
+        .attr('height', 0) // 초기 높이
+        .attr('fill', 'lightgreen');
 
-    labelsEnter.merge(labels)
+    bars2022Enter.merge(bars2022)
         .transition()
         .duration(500)
-        .attr('x', (d, i) => i * barBand + barBand / 2) // 두 바의 가운데 위치
-        .attr('y', chartHeight + 15); // 세로 위치 유지
+        .attr('x', (d, i) => i * barBand) // 바 위치
+        .attr('y', d => chartHeight - widthScale(d.house2022)) // 높이에 따라 위치 변경
+        .attr('height', d => widthScale(d.house2022)) // 값에 따라 바의 길이 설정
+        .attr('width', individualBarWidth); // 바 두께 유지
 
-    labels.exit().remove();
+    bars2022.exit().remove();
+
+
+    // Handle the text labels for each country
+var labels = chartG.selectAll('.label')
+.data(filteredCountries, d => d.country);
+
+var labelsEnter = labels.enter()
+.append('text')
+.attr('class', 'label')
+.attr('text-anchor', 'front') // 끝을 기준으로 회전
+.attr('transform', (d, i) => {
+    const x = i * barBand + barBand / 2; // X 위치
+    const y = chartHeight + 15; // Y 위치
+    return `translate(${x}, ${y}) rotate(-45)`; // 텍스트 회전
+})
+.text(d => d.country);
+
+labelsEnter.merge(labels)
+.transition()
+.duration(500)
+.attr('transform', (d, i) => {
+    const x = i * barBand + barBand / 2; // X 위치
+    const y = chartHeight + 15; // Y 위치
+    return `translate(${x}, ${y}) rotate(45)`; // 텍스트 회전
+});
+
+labels.exit().remove();
+
 }
 
 
