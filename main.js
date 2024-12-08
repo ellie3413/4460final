@@ -1,11 +1,16 @@
-// Global function called when select element is changed
 function onCategoryChanged() {
     var select = d3.select('#categorySelect').node();
-    // Get current value of select element
     var category = select.options[select.selectedIndex].value;
-    // Update chart with the selected category of temperatures
-    updateChart(category);
+
+    var yearSelect = d3.select('#yearSelect').node();
+    var yearFilter = yearSelect.options[yearSelect.selectedIndex].value;
+
+    var cutoff = parseFloat(d3.select('#cutoff').property('value')) || 0;
+
+    updateChart(category, cutoff, yearFilter);
 }
+
+
 
 // This function converts strings to numeric temperatures during data preprocessing
 function dataPreprocessor(row) {
@@ -55,6 +60,7 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
         .text('Housing Burden (%)');
 
     var xAxisBottom = d3.axisBottom(widthScale)
+    .ticks(0);
      
 
     chartG.append('g')
@@ -79,16 +85,19 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
 });
 var currentFilterKey = 'all-continents'; 
 
-function updateChart(filterKey, cutoff = 0) {
+function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
     // Create a filtered array of countries based on the filterKey
     var filteredCountries;
     currentFilterKey = filterKey;
 
-    if (filterKey === 'all-continents') {
-        filteredCountries = countries.filter(d => d.house2022 >= cutoff && d.house2015 >= cutoff);
-    } else {
-        filteredCountries = countries.filter(d => d.continent === filterKey && d.house2022 >= cutoff && d.house2015 >= cutoff);
-    }
+    var filteredCountries = countries.filter(d => {
+        const matchesContinent = filterKey === 'all-continents' || d.continent === filterKey;
+        const matchesYear2015 = yearFilter === '2015' && d.house2015 >= cutoff;
+        const matchesYear2022 = yearFilter === '2022' && d.house2022 >= cutoff;
+        const matchesBothYears = yearFilter === 'both' && d.house2015 >= cutoff && d.house2022 >= cutoff;
+
+        return matchesContinent && (matchesYear2015 || matchesYear2022 || matchesBothYears);
+    });
 
     // Compute the spacing for bar bands based on the number of countries (20 in this case)
     var barBand = chartHeight / filteredCountries.length;
@@ -117,7 +126,8 @@ function updateChart(filterKey, cutoff = 0) {
         .attr('x', (d, i) => i * barBand + individualBarWidth + barSpacing) // 바 위치
         .attr('y', d => chartHeight - widthScale(d.house2015)) // 높이에 따라 위치 변경
         .attr('height', d => widthScale(d.house2015)) // 값에 따라 바의 길이 설정
-        .attr('width', individualBarWidth); // 바 두께 유지
+        .attr('width', individualBarWidth) // 바 두께 유지
+        .style('display', yearFilter === '2015' || yearFilter === 'both' ? 'block' : 'none'); 
 
     bars2015.exit().remove();
 
@@ -140,9 +150,11 @@ function updateChart(filterKey, cutoff = 0) {
         .attr('x', (d, i) => i * barBand) // 바 위치
         .attr('y', d => chartHeight - widthScale(d.house2022)) // 높이에 따라 위치 변경
         .attr('height', d => widthScale(d.house2022)) // 값에 따라 바의 길이 설정
-        .attr('width', individualBarWidth); // 바 두께 유지
+        .attr('width', individualBarWidth) // 바 두께 유지
+        .style('display', yearFilter === '2022' || yearFilter === 'both' ? 'block' : 'none'); // 2022 표시 조건
 
-    bars2022.exit().remove();
+     bars2022.exit().remove();
+    
 
 
     // Handle the text labels for each country
