@@ -12,8 +12,8 @@ function dataPreprocessor(row) {
     return {
         country: row.Country,
         continent: row.Continent,
-        house2015: +row['2015'],
-        house2022: +row['2022']
+        house2015: +row.house2015, 
+        house2022: +row.house2022 
     };
 }
 
@@ -47,7 +47,7 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
 
     countries = dataset
     widthScale.domain([0, d3.max(countries, function(d) {
-        return Math.max(d.house2010, d.house2022);
+        return Math.max(d.house2015, d.house2022);
     })]);
 
     // **** Your JavaScript code goes here ****
