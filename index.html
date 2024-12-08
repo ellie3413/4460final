@@ -8,10 +8,10 @@
 </head>
 <body>
     <div id="main">
-        <h3>CS4460 Final Project</h3>
+        <h4>CS4460 Final Project</h4>
         <h5><b>GTID: 903972992 Suyeon Seo / GTID: 904059831 Woojin Kang </b></h5>
         <br />
-        <h3>Housing Burden Over Time Around</h3>
+        <h3>Global Housing Burden: A Comparison of 2015 vs. 2022</h3>
         <h5>Data Source : OECD Data Explorer </h5>
         <div class="select-container">
             <label for="categorySelect">Select A Continent: </label>
@@ -21,7 +21,7 @@
                 <option value="South America">South America</option>
                 <option value="Europe">Europe</option>
             </select>
-            <label for="yearSelect">Select A Year: </label>
+            <label for="yearSelect"> Select A Year: </label>
             <select class="custom-select" id="yearSelect" onchange="onCategoryChanged()">
                 <option selected value="both">Both Years</option>
                 <option value="2015">2015</option>
@@ -34,9 +34,9 @@
                 <label for="cutoffFilter" class="show">Cutoff:</label>
                 <input type="text" id="cutoff">
             </form>
-            <p>
-                <button id="filter-button" style="border: 1px solid black">Filter Data</button>
-            </p>
+
+            <button id="filter-button" style="border: 1px solid black">Filter Data</button>
+
         </div>        
         
         <svg width="1000" height="800">

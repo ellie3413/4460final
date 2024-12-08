@@ -61,6 +61,8 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
         .attr('x', 500) 
         .attr('y', 30)           
         .attr('text-anchor', 'middle')  
+        .style('font-size', '24px') 
+        .style('font-weight', 'bold')
         .text('Global Housing Burden: A Comparison of 2015 vs. 2022');
 
     var xAxisBottom = d3.axisBottom(widthScale)
