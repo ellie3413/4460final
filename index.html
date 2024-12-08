@@ -18,6 +18,13 @@
                 <option value="South America">South America</option>
                 <option value="Europe">Europe</option>
             </select>
+            <label for="yearSelect">Show: </label>
+            <select class="custom-select" id="yearSelect" onchange="onCategoryChanged()">
+                <option selected value="both-years">All Continents</option>
+                <option value="North America">North America</option>
+                <option value="South America">South America</option>
+                <option value="Europe">Europe</option>
+            </select>
             <form name="cutoff">
                 <label for="cutoffFilter" class="show">Cutoff:</label>
                 <input type="text" id="cutoff">
