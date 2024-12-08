@@ -41,7 +41,7 @@ var chartG = svg.append('g')
 var countries;
 
 var widthScale = d3.scaleLinear()
-    .range([0, chartWidth])
+    .range([0,chartWidth])
 
 d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     // Create global variables here and initialize the chart
@@ -70,7 +70,7 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
 
         // Create a left vertical axis using widthScale
     var yAxisLeft = d3.axisLeft(widthScale)
-    .ticks(5) // 원하는 만큼의 틱 개수 설정
+    .ticks(10) // 원하는 만큼의 틱 개수 설정
     .tickFormat(d => d + '%'); // 값에 포맷 추가 (예: % 기호)
 
     // Append the left vertical axis to the chart
@@ -148,7 +148,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
         .transition()
         .duration(500)
         .attr('x', (d, i) => i * barBand) // 바 위치
-        .attr('y', d => chartHeight - widthScale(d.house2022)) // 높이에 따라 위치 변경
+        .attr('y', d => chartHeight- widthScale(d.house2022)) // 높이에 따라 위치 변경
         .attr('height', d => widthScale(d.house2022)) // 값에 따라 바의 길이 설정
         .attr('width', individualBarWidth) // 바 두께 유지
         .style('display', yearFilter === '2022' || yearFilter === 'both' ? 'block' : 'none'); // 2022 표시 조건
@@ -183,18 +183,12 @@ labelsEnter.merge(labels)
 
 labels.exit().remove();
 
+d3.select('#filter-button').on('click', function() {
+    var cutoffValue = parseFloat(d3.select('#cutoff').property('value')) || 0;
+    var yearFilter = d3.select('#yearSelect').node().value;
+    updateChart(currentFilterKey, cutoffValue, yearFilter);
+});
+
 }
 
 
-
-// Remember code outside of the data callback function will run before the data loads
-d3.select('#main')
-    .append('p')
-    .append('button')
-    .style("border", "1px solid black")
-    .text('Filter Data')
-    .on('click', function() {
-        // Add code here
-        var cutoffValue = parseFloat(d3.select('#cutoff').property('value'));
-        updateChart(currentFilterKey, cutoffValue);
-    });

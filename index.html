@@ -11,10 +11,7 @@
         <h1>CS4460 Final Project</h1>
         <h5><b>GTID: 903972992 Suyeon Seo / GTID: 904059831 Woojin Kang </b></h5>
         <br />
-        <div id="chart1">
-        </div>
-        <svg width="800" height="600" style="border: 1px solid #777;">
-        </svg>
+    
         <div>
             <label for="categorySelect">Select A Continent: </label>
             <select class="custom-select" id="categorySelect" onchange="onCategoryChanged()">
@@ -33,7 +30,13 @@
                 <label for="cutoffFilter" class="show">Cutoff:</label>
                 <input type="text" id="cutoff">
             </form>
-        </div>
+            <p>
+                <button id="filter-button" style="border: 1px solid black">Filter Data</button>
+            </p>
+        </div>        
+        
+        <svg width="800" height="600" style="border: 1px solid #777;">
+        </svg>
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
