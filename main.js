@@ -12,7 +12,7 @@ function onCategoryChanged() {
 
 
 
-// This function converts strings to numeric temperatures during data preprocessing
+// This function converts strings to numeric
 function dataPreprocessor(row) {
     return {
         country: row.Country,
@@ -281,11 +281,11 @@ var labels = chartG.selectAll('.label')
 var labelsEnter = labels.enter()
 .append('text')
 .attr('class', 'label')
-.attr('text-anchor', 'front') // 끝을 기준으로 회전
+.attr('text-anchor', 'front') 
 .attr('transform', (d, i) => {
-    const x = i*barBand+barSpacing; // X 위치
-    const y = chartHeight + 10; // Y 위치
-    return `translate(${x}, ${y}) rotate(-45)`; // 텍스트 회전
+    const x = i*barBand+barSpacing; 
+    const y = chartHeight + 10; // 
+    return `translate(${x}, ${y}) rotate(-45)`; 
 })
 .text(d => d.country);
 
@@ -293,9 +293,9 @@ labelsEnter.merge(labels)
 .transition()
 .duration(500)
 .attr('transform', (d, i) => {
-    const x = i*barBand+barSpacing; // X 위치
-    const y = chartHeight + 10; // Y 위치
-    return `translate(${x}, ${y}) rotate(45)`; // 텍스트 회전
+    const x = i*barBand+barSpacing; 
+    const y = chartHeight + 10; 
+    return `translate(${x}, ${y}) rotate(45)`; 
 });
 
 labels.exit().remove();
