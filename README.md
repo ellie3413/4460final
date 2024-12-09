@@ -17,7 +17,7 @@ This interactive bar chart allows you to explore and compare the global housing 
 
 #### **How to navigate through the visualization**
 1. **Hover over the bars**:
-   Hover over any bar to see precise and detailed information about the country and its housing burden percentage for the respective year.
+Hover over any bar to see precise and detailed information about the country and its housing burden percentage for the respective year.
 
 2. **Select a Continent**:
    - Use the dropdown menu labeled "Select A Continent" to filter countries by continent(Europe, North America, South America) and focus on specific regions.
