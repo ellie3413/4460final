@@ -72,13 +72,14 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     .attr('y', 10)
     .attr('width', 15)
     .attr('height', 15)
-    .attr('fill', 'lightgreen');
+    .attr('fill', 'yellowgreen');
 
     legend.append('text')
     .attr('x', 35)
     .attr('y', 22)
-    .style('font-size', '14px')
-    .style('font-family', 'Arial, sans-serif')
+    .style('font-size', '15px')
+    .style('font-family', 'Open Sans')
+    .style('font-weight', '400')
     .text('2015 Housing Burden');
 
     legend.append('rect')
@@ -91,8 +92,9 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     legend.append('text')
     .attr('x', 35)
     .attr('y', 52)
-    .style('font-size', '14px')
-    .style('font-family', 'Arial, sans-serif')
+    .style('font-size', '15px')
+    .style('font-family', 'Open Sans')
+    .style('font-weight', '400')
     .text('2022 Housing Burden');
 
     svg.append('text')
@@ -106,11 +108,23 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
 
     var xAxisBottom = d3.axisBottom(widthScale)
     .ticks(0);
-    
+
     chartG.append('g')
         .attr('class', 'x-axis-bottom')
         .attr('transform', `translate(0, ${chartHeight})`) 
         .call(xAxisBottom);
+
+        // X축 제목 추가
+    chartG.append('text')
+    .attr('class', 'x-axis-label')
+    .attr('x', chartWidth / 2) // 가로 가운데 정렬
+    .attr('y', chartHeight + 80) // X축 아래로 이동
+    .attr('text-anchor', 'middle') // 가운데 정렬
+    .style('font-size', '14px')
+    .style('font-family', 'Open Sans')
+    .style('font-weight', '600')
+    .text('Countries');
+
 
     // Create a left vertical axis using widthScale
     var yAxisLeft = d3.axisLeft(HeightScale)
@@ -122,6 +136,19 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     .attr('class', 'y-axis-left')
     .attr('transform', `translate(0, 0)`) // 왼쪽에 축 위치
     .call(yAxisLeft);
+
+        // Y축 제목 추가
+    chartG.append('text')
+    .attr('class', 'y-axis-label')
+    .attr('x', -chartHeight / 2) // 세로 가운데 정렬
+    .attr('y', -50) // Y축 왼쪽으로 이동
+    .attr('transform', 'rotate(-90)') // 텍스트를 세로로 회전
+    .attr('text-anchor', 'middle') // 가운데 정렬
+    .style('font-size', '14px')
+    .style('font-family', 'Open Sans')
+    .style('font-weight', '600')
+    .text('Housing Burden (%)');
+
 
 
     // Update the chart for all countries to initialize
@@ -162,7 +189,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
         .attr('y', chartHeight) // 초기 위치
         .attr('width', individualBarWidth) // 두께 조정
         .attr('height', 0) // 초기 높이
-        .attr('fill', 'lightgreen');
+        .attr('fill', 'yellowgreen');
 
     bars2015Enter.merge(bars2015)
         .transition()
