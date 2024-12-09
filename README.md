@@ -16,20 +16,23 @@ This interactive bar chart allows you to explore and compare the global housing 
 ---
 
 #### **How to navigate through the visualization**
-1. **Select a Continent**:
-   - Use the dropdown menu labeled *"Select A Continent"* to filter countries by continent (Europe, North America, South America) and focus on specific regions.
-   - Choose *"All Continents"* to view data globally.
+1. **Hover over the bars**:
+   Hover over any bar to see precise and detailed information about the country and its housing burden percentage for the respective year.
 
-2. **Select a Year**:
-   - Use the dropdown menu labeled *"Select A Year"* to toggle between data for 2015, 2022, or both years.
+2. **Select a Continent**:
+   - Use the dropdown menu labeled "Select A Continent" to filter countries by continent(Europe, North America, South America) and focus on specific regions.
+   - Choose **"All Continents"** to view and compare data globally.
 
-3. **Set a Cutoff**:
-   - Enter a numeric value in the cutoff filter box to exclude countries with housing burdens below this value.
-   - focus on countries with higher housing burdens.
-   - Press the green "Filter Data" button to apply the cutoff.
+3. **Select a Year**:
+   - Use the "Select A Year" dropdown to toggle between:
+      **2015**: View data only for 2015.
+      **2022**: View data only for 2022.
+      **Both Years**: Compare data across both years.
+   - See trends for each year and observe how housing burdens have changed over time by changing the view of the visualization.
 
-4. **Hover over the bars**:
-Hover over any bar to see detailed information about the country and its housing burden percentage for the respective year.
+4. **Set a Cutoff**:
+   - Enter a number in the cutoff filter box to focus on countries with housing burdens exceeding this value.
+   - Click the green "Filter Data" button to apply the cutoff.
 
 Have fun exploring the data!
 
