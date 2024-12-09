@@ -1,3 +1,4 @@
+//get selected continent, year, and cutoff value from the dropdown menus
 function onCategoryChanged() {
     var select = d3.select('#categorySelect').node();
     var category = select.options[select.selectedIndex].value;
@@ -10,9 +11,7 @@ function onCategoryChanged() {
     updateChart(category, cutoff, yearFilter);
 }
 
-
-
-// This function converts strings to numeric
+// converts strings to numeric
 function dataPreprocessor(row) {
     return {
         country: row.Country,
@@ -40,6 +39,8 @@ var chartG = svg.append('g')
 
 var countries;
 
+
+// Set up scales
 var widthScale = d3.scaleLinear()
     .range([0,chartWidth])
 
@@ -47,13 +48,13 @@ var HeightScale = d3.scaleLinear()
     .range([chartHeight, 0])
 
 d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
-    // Create global variables here and initialize the chart
 
     countries = dataset
     HeightScale.domain([0, d3.max(countries, function(d) {
         return Math.max(d.house2015, d.house2022);
     })]);
 
+    //legend
     var legend = svg.append('g')
     .attr('class', 'legend')
     .attr('transform', `translate(${svgWidth - 200}, ${padding.t})`);
@@ -97,6 +98,7 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     .style('font-weight', '400')
     .text('2022 Housing Burden');
 
+    //graph title
     svg.append('text')
         .attr('class', 'title')  
         .attr('x', 500) 
@@ -106,6 +108,7 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
         .style('font-weight', 'bold')
         .text('Global Housing Burden: A Comparison of 2015 vs. 2022');
 
+    //xaxis
     var xAxisBottom = d3.axisBottom(widthScale)
     .ticks(0);
 
@@ -114,44 +117,37 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
         .attr('transform', `translate(0, ${chartHeight})`) 
         .call(xAxisBottom);
 
-        // X축 제목 추가
     chartG.append('text')
     .attr('class', 'x-axis-label')
-    .attr('x', chartWidth / 2) // 가로 가운데 정렬
-    .attr('y', chartHeight + 80) // X축 아래로 이동
-    .attr('text-anchor', 'middle') // 가운데 정렬
+    .attr('x', chartWidth / 2) 
+    .attr('y', chartHeight + 80) 
+    .attr('text-anchor', 'middle')
     .style('font-size', '14px')
     .style('font-family', 'Open Sans')
     .style('font-weight', '600')
     .text('Countries');
 
-
-    // Create a left vertical axis using widthScale
+    //yaxis 
     var yAxisLeft = d3.axisLeft(HeightScale)
-    .ticks(9) // 원하는 만큼의 틱 개수 설정
-    .tickFormat(d => d + '%'); // 값에 포맷 추가 (예: % 기호)
+    .ticks(9)
+    .tickFormat(d => d + '%');
 
-    // Append the left vertical axis to the chart
     chartG.append('g')
     .attr('class', 'y-axis-left')
-    .attr('transform', `translate(0, 0)`) // 왼쪽에 축 위치
+    .attr('transform', `translate(0, 0)`) 
     .call(yAxisLeft);
 
-        // Y축 제목 추가
     chartG.append('text')
     .attr('class', 'y-axis-label')
-    .attr('x', -chartHeight / 2) // 세로 가운데 정렬
-    .attr('y', -50) // Y축 왼쪽으로 이동
-    .attr('transform', 'rotate(-90)') // 텍스트를 세로로 회전
-    .attr('text-anchor', 'middle') // 가운데 정렬
+    .attr('x', -chartHeight / 2) 
+    .attr('y', -50) 
+    .attr('transform', 'rotate(-90)') 
+    .attr('text-anchor', 'middle') 
     .style('font-size', '14px')
     .style('font-family', 'Open Sans')
     .style('font-weight', '600')
     .text('Housing Burden (%)');
 
-
-
-    // Update the chart for all countries to initialize
     updateChart('all-continents');
 });
 var currentFilterKey = 'all-continents'; 
@@ -170,37 +166,35 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
         return matchesContinent && (matchesYear2015 || matchesYear2022 || matchesBothYears);
     });
 
-    // Compute the spacing for bar bands based on the number of countries (20 in this case)
+    // Compute the spacing for bar bands
     var barBand = chartWidth / filteredCountries.length;
-    var barHeight = barBand * 0.6;
 
-    // Bar width adjustment for two bars per country
-    var barSpacing = barBand * 0.2; // Spacing between bars
+    var barSpacing = barBand * 0.2; 
     var individualBarWidth = (barBand - barSpacing) / 2;
 
-    // Bars for house2015
+    // Bars for house burden value in 2015
     var bars2015 = chartG.selectAll('.bar2015')
         .data(filteredCountries, d => d.country);
 
     var bars2015Enter = bars2015.enter()
         .append('rect')
         .attr('class', 'bar2015')
-        .attr('x', (d, i) => i * barBand + barSpacing) // bar2015 x position
-        .attr('y', chartHeight) // 초기 위치
-        .attr('width', individualBarWidth) // 두께 조정
-        .attr('height', 0) // 초기 높이
+        .attr('x', (d, i) => i * barBand + barSpacing) 
+        .attr('y', chartHeight) 
+        .attr('width', individualBarWidth) 
+        .attr('height', 0) 
         .attr('fill', 'yellowgreen');
 
     bars2015Enter.merge(bars2015)
         .transition()
         .duration(500)
-        .attr('x', (d, i) => i * barBand + barSpacing) // 바 위치
-        .attr('y', d => HeightScale(d.house2015)) // 높이에 따라 위치 변경
-        .attr('height', d => chartHeight - HeightScale(d.house2015)) // 값에 따라 바의 길이 설정
-        .attr('width', individualBarWidth) // 바 두께 유지
+        .attr('x', (d, i) => i * barBand + barSpacing) 
+        .attr('y', d => HeightScale(d.house2015)) 
+        .attr('height', d => chartHeight - HeightScale(d.house2015)) 
+        .attr('width', individualBarWidth) 
         .style('display', yearFilter === '2015' || yearFilter === 'both' ? 'block' : 'none'); 
 
-    //add hover 
+    //add hover for 2015
     var tooltip = d3.select('body')
     .append('div') 
     .attr('id', 'tooltip') 
@@ -212,7 +206,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
     .style('padding', '5px')
     .style('font-size', '12px')
     .style('pointer-events', 'none');
-    //add hover
+    
     bars2015Enter
         .on('mouseover', function(event, d) {
             tooltip
@@ -232,28 +226,29 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
 
     bars2015.exit().remove();
 
-    // Bars for house2022
+    // Bars for house burden value in 2022
     var bars2022 = chartG.selectAll('.bar2022')
         .data(filteredCountries, d => d.country);
 
     var bars2022Enter = bars2022.enter()
         .append('rect')
         .attr('class', 'bar2022')
-        .attr('x', (d, i) => i * barBand+ + barSpacing+individualBarWidth) // 가로 방향으로 나열
-        .attr('y', chartHeight) // 초기 위치
-        .attr('width', individualBarWidth) // 두께 조정
-        .attr('height', 0) // 초기 높이
+        .attr('x', (d, i) => i * barBand+ + barSpacing+individualBarWidth) 
+        .attr('y', chartHeight) 
+        .attr('width', individualBarWidth) 
+        .attr('height', 0) 
         .attr('fill', 'green');
 
     bars2022Enter.merge(bars2022)
         .transition()
         .duration(500)
-        .attr('x', (d, i) => i * barBand+ + barSpacing+individualBarWidth) // 바 위치
-        .attr('y', d => HeightScale(d.house2022)) // 높이에 따라 위치 변경
-        .attr('height', d => chartHeight - HeightScale(d.house2022)) // 값에 따라 바의 길이 설정
-        .attr('width', individualBarWidth) // 바 두께 유지
-        .style('display', yearFilter === '2022' || yearFilter === 'both' ? 'block' : 'none'); // 2022 표시 조건
+        .attr('x', (d, i) => i * barBand+ + barSpacing+individualBarWidth) 
+        .attr('y', d => HeightScale(d.house2022)) 
+        .attr('height', d => chartHeight - HeightScale(d.house2022)) 
+        .attr('width', individualBarWidth) 
+        .style('display', yearFilter === '2022' || yearFilter === 'both' ? 'block' : 'none'); 
 
+    //add hover for 2022
     bars2022Enter
         .on('mouseover', function(event, d) {
             tooltip
@@ -274,7 +269,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
     
 
 
-    // Handle the text labels for each country
+// xaxis Country text labels
 var labels = chartG.selectAll('.label')
 .data(filteredCountries, d => d.country);
 
@@ -300,6 +295,7 @@ labelsEnter.merge(labels)
 
 labels.exit().remove();
 
+//filter data button
 d3.select('#filter-button').on('click', function() {
     var cutoffValue = parseFloat(d3.select('#cutoff').property('value')) || 0;
     var yearFilter = d3.select('#yearSelect').node().value;
