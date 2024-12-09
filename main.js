@@ -54,23 +54,19 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
         return Math.max(d.house2015, d.house2022);
     })]);
 
-
-        // 범례 추가
     var legend = svg.append('g')
     .attr('class', 'legend')
-    .attr('transform', `translate(${svgWidth - 200}, ${padding.t})`); // 오른쪽 위에 배치
+    .attr('transform', `translate(${svgWidth - 200}, ${padding.t})`);
 
-    // 범례 테두리
     legend.append('rect')
     .attr('width', 180)
     .attr('height', 65)
-    .attr('fill', 'none')
+    .attr('fill', 'white')
     .attr('stroke', '#4CAF50')
     .attr('stroke-width', 2)
     .attr('rx', 10) 
     .attr('ry', 10);
 
-    // 범례 항목 1: 2015 데이터
     legend.append('rect')
     .attr('x', 10)
     .attr('y', 10)
@@ -85,7 +81,6 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     .style('font-family', 'Arial, sans-serif')
     .text('2015 Housing Burden');
 
-    // 범례 항목 2: 2022 데이터
     legend.append('rect')
     .attr('x', 10)
     .attr('y', 40)
@@ -100,9 +95,6 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     .style('font-family', 'Arial, sans-serif')
     .text('2022 Housing Burden');
 
-
-
-    // **** Your JavaScript code goes here ****
     svg.append('text')
         .attr('class', 'title')  
         .attr('x', 500) 
@@ -114,8 +106,7 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
 
     var xAxisBottom = d3.axisBottom(widthScale)
     .ticks(0);
-
-
+    
     chartG.append('g')
         .attr('class', 'x-axis-bottom')
         .attr('transform', `translate(0, ${chartHeight})`) 
