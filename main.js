@@ -55,6 +55,53 @@ d3.csv('housing_cost.csv', dataPreprocessor).then(function(dataset) {
     })]);
 
 
+        // 범례 추가
+    var legend = svg.append('g')
+    .attr('class', 'legend')
+    .attr('transform', `translate(${svgWidth - 200}, ${padding.t})`); // 오른쪽 위에 배치
+
+    // 범례 테두리
+    legend.append('rect')
+    .attr('width', 180)
+    .attr('height', 65)
+    .attr('fill', 'none')
+    .attr('stroke', '#4CAF50')
+    .attr('stroke-width', 2)
+    .attr('rx', 10) 
+    .attr('ry', 10);
+
+    // 범례 항목 1: 2015 데이터
+    legend.append('rect')
+    .attr('x', 10)
+    .attr('y', 10)
+    .attr('width', 15)
+    .attr('height', 15)
+    .attr('fill', 'lightgreen');
+
+    legend.append('text')
+    .attr('x', 35)
+    .attr('y', 22)
+    .style('font-size', '14px')
+    .style('font-family', 'Arial, sans-serif')
+    .text('2015 Housing Burden');
+
+    // 범례 항목 2: 2022 데이터
+    legend.append('rect')
+    .attr('x', 10)
+    .attr('y', 40)
+    .attr('width', 15)
+    .attr('height', 15)
+    .attr('fill', 'green');
+
+    legend.append('text')
+    .attr('x', 35)
+    .attr('y', 52)
+    .style('font-size', '14px')
+    .style('font-family', 'Arial, sans-serif')
+    .text('2022 Housing Burden');
+
+
+
     // **** Your JavaScript code goes here ****
     svg.append('text')
         .attr('class', 'title')  
@@ -124,7 +171,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
         .attr('y', chartHeight) // 초기 위치
         .attr('width', individualBarWidth) // 두께 조정
         .attr('height', 0) // 초기 높이
-        .attr('fill', 'green');
+        .attr('fill', 'lightgreen');
 
     bars2015Enter.merge(bars2015)
         .transition()
@@ -178,7 +225,7 @@ function updateChart(filterKey, cutoff = 0, yearFilter = 'both') {
         .attr('y', chartHeight) // 초기 위치
         .attr('width', individualBarWidth) // 두께 조정
         .attr('height', 0) // 초기 높이
-        .attr('fill', 'lightgreen');
+        .attr('fill', 'green');
 
     bars2022Enter.merge(bars2022)
         .transition()
