@@ -25,9 +25,9 @@ Hover over any bar to see precise and detailed information about the country and
 
 3. **Select a Year**:
    - Use the "Select A Year" dropdown to toggle between:
-      **2015**: View data only for 2015.
-      **2022**: View data only for 2022.
-      **Both Years**: Compare data across both years.
+      - **2015**: View data only for 2015.
+      - **2022**: View data only for 2022.
+      - **Both Years**: Compare data across both years.
    - See trends for each year and observe how housing burdens have changed over time by changing the view of the visualization.
 
 4. **Set a Cutoff**:
