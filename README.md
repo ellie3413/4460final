@@ -1,27 +1,23 @@
-# 4460final
+# Navigating the Housing Burden Visualization
 
-### README: Navigating the Housing Burden Visualization
-
-This visualization compares the global housing burden across countries for the years 2015 and 2022. Follow these steps to explore the data effectively:
+This interactive bar chart allows you to explore and compare the global housing burden (%) for various countries in the years 2015 and 2022. Use the features below to explore trends and gain insights.
 
 ---
 
-#### **Getting Started**
-1. **View the Chart**: The main bar chart displays the housing burden (%) for each country. 
-   - Light green bars represent data from **2015**.
-   - Green bars represent data from **2022**.
+#### **Overview**
+1. **Axes**:
+   - **X-Axis**: The countries.
+   - **Y-Axis**: The housing burden as a percentage (%).
 
-2. **Legend**: Located at the top-right corner, the legend helps identify the color coding for the years.
-
-3. **Axes**:
-   - **Y-Axis**: Shows the housing burden as a percentage (%).
-   - **X-Axis**: Lists the countries.
+2. **Color coding for the years**:
+   - **Light green bars**: Housing burden data for 2015.
+   - **Green bars**: Housing burden data for 2022.
 
 ---
 
-#### **Interactivity**
+#### **How to navigate through the visualization**
 1. **Select a Continent**:
-   - Use the dropdown menu labeled *"Select A Continent"* to filter countries by continent (e.g., Europe, North America).
+   - Use the dropdown menu labeled *"Select A Continent"* to filter countries by continent (Europe, North America, South America) and focus on specific regions.
    - Choose *"All Continents"* to view data globally.
 
 2. **Select a Year**:
@@ -29,20 +25,14 @@ This visualization compares the global housing burden across countries for the y
 
 3. **Set a Cutoff**:
    - Enter a numeric value in the cutoff filter box to exclude countries with housing burdens below this value.
+   - focus on countries with higher housing burdens.
    - Press the green "Filter Data" button to apply the cutoff.
 
----
+4. **Hover over the bars**:
+Hover over any bar to see detailed information about the country and its housing burden percentage for the respective year.
 
-#### **Tooltips**
-- Hover over any bar to see detailed information about the country and its housing burden percentage for the respective year.
-
----
-
-#### **Navigation Tips**
-- To explore trends over time, switch between *2015*, *2022*, and *Both Years* using the year selector.
-- Use the continent selector to focus on specific regions, such as Europe or South America.
-- Experiment with the cutoff filter to focus on countries with higher housing burdens.
+Have fun exploring the data!
 
 ---
 
-This visualization is designed for easy interaction, providing insights into housing burdens globally and regionally over time. Have fun exploring the data!
+This visualization is created by Suyeon Seo and Woojin Kang for CS4460 final project. 
